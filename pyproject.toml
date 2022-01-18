@@ -7,12 +7,16 @@ authors = [
 ]
 dependencies = [
     "giturlparse>=0.10.0",
+    "click>=8.0.3",
 ]
 requires-python = ">=3.8"
 license = {text = "MIT"}
 
 [project.urls]
-homepage = ""
+homepage = "https://github.com/alingse/git-ssh-keys-keeper"
+
+[project.scripts]
+git-skk = "main:main"
 
 [tool]
 [tool.pdm]
