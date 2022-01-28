@@ -6,17 +6,12 @@ authors = [
     {name = "alingse", email = "alingse@foxmail.com"},
 ]
 dependencies = [
-    "giturlparse>=0.10.0",
-    "click>=8.0.3",
-]
-requires-python = ">=3.8"
+    "sshconf>=0.2.4"]
+requires-python = ">=3.10"
 license = {text = "MIT"}
 
 [project.urls]
-homepage = "https://github.com/alingse/git-ssh-keys-keeper"
-
-[project.scripts]
-git-skk = "main:main"
+homepage = ""
 
 [tool]
 [tool.pdm]

@@ -1,38 +1,13 @@
 [[package]]
-name = "click"
-version = "8.0.3"
-requires_python = ">=3.6"
-summary = "Composable command line interface toolkit"
-dependencies = [
-    "colorama; platform_system == \"Windows\"",
-]
-
-[[package]]
-name = "colorama"
-version = "0.4.4"
-requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-summary = "Cross-platform colored terminal text."
-
-[[package]]
-name = "giturlparse"
-version = "0.10.0"
-requires_python = ">=3.6"
-summary = "A Git URL parsing module (supports parsing and rewriting)"
+name = "sshconf"
+version = "0.2.4"
+summary = "Lightweight SSH config library"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:e1182716929860b8a27baef2f63131e4553584c5b62746527a8efaf672beb58b"
+content_hash = "sha256:29cb189766de0a9bc07bdb53e211db611619303cd56ff8e80315663f6e4cdbe6"
 
 [metadata.files]
-"click 8.0.3" = [
-    {file = "click-8.0.3-py3-none-any.whl", hash = "sha256:353f466495adaeb40b6b5f592f9f91cb22372351c84caeb068132442a4518ef3"},
-    {file = "click-8.0.3.tar.gz", hash = "sha256:410e932b050f5eed773c4cda94de75971c89cdb3155a72a0831139a79e5ecb5b"},
-]
-"colorama 0.4.4" = [
-    {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
-    {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
-]
-"giturlparse 0.10.0" = [
-    {file = "giturlparse-0.10.0-py2.py3-none-any.whl", hash = "sha256:04ba1a3a099c3093fa8d24a422913c6a9b2c2cd22bcffc939cf72e3e98f672d7"},
-    {file = "giturlparse-0.10.0.tar.gz", hash = "sha256:2595ab291d30717cda8474b874c9fd509f1b9802ad7f6968c36a45e4b13eb337"},
+"sshconf 0.2.4" = [
+    {file = "sshconf-0.2.4.tar.gz", hash = "sha256:457e8bf13bdd1229a3d7d06b4a8487ded5cdedeaf11879decf87e25eeb166b08"},
 ]
