@@ -16,6 +16,9 @@ license = {text = "MIT"}
 [project.urls]
 homepage = "https://github.com/alingse/git-ssh-key"
 
+[project.scripts]
+git-ssh-key = "gitsshkey.main:main"
+
 [tool]
 [tool.pdm]
 
