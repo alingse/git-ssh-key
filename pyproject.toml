@@ -1,17 +1,20 @@
 [project]
-name = "git-ssh-keys-keeper"
+name = "git-ssh-key"
 version = "0.1.0"
 description = ""
 authors = [
     {name = "alingse", email = "alingse@foxmail.com"},
 ]
 dependencies = [
-    "sshconf>=0.2.4"]
-requires-python = ">=3.10"
+    "sshconf>=0.2.4",
+    "click>=8.0.3",
+    "giturlparse>=0.10.0",
+]
+requires-python = ">=3.8"
 license = {text = "MIT"}
 
 [project.urls]
-homepage = ""
+homepage = "https://github.com/alingse/git-ssh-key"
 
 [tool]
 [tool.pdm]
