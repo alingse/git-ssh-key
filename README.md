@@ -20,3 +20,24 @@ pdm install
 
 pdm build
 ```
+
+### publish
+
+add once
+
+```bash
+pdm config publish.username xxx
+pdm config publish.password yyy
+```
+
+```bash
+pdm publish
+```
+
+## TODO
+
+1. show public key ?
+2. better -c -k ?
+3. more error checking raise click.ClickException
+4. os.system need
+5. add more test ?
