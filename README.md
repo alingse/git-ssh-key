@@ -39,5 +39,7 @@ pdm publish
 1. show public key ?
 2. better -c -k ?
 3. more error checking raise click.ClickException
-4. os.system need
+4. replace os.system
 5. add more test ?
+6. support duplicate keys ?
+7. better giturlparse
