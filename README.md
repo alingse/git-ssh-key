@@ -10,7 +10,7 @@ this command will auto generate the key and add it to your ssh config
 pip install git-ssh-key
 ```
 
-run command with your repo link
+run command with your repo link like
 
 ```bash
 git-ssh-key https://github.com/alingse/git-ssh-key.git
@@ -23,7 +23,15 @@ New repo address: git@github.com-f5851eb:alingse/git-ssh-key.git
 New repo public rsa key: /Users/alingse/.ssh/github.com-f5851eb.id_rsa.pub
 ```
 
-you can add it to repo's setting keys
+the public key has already been configured in your ssh config file, remember add it to repo's setting keys (private or public)
+
+and then just clone like
+
+```bash
+git clone git@github.com-f5851eb:alingse/git-ssh-key.git
+```
+
+more options see
 
 ```bash
 git-ssh-key --help
@@ -31,9 +39,20 @@ git-ssh-key --help
 git-ssh-key --config your.ssh.config --keys your-ssh-keys/ your.repo
 ```
 
-## How
+## How it work
 
 I ever see some stackoverflow and github gist, and just make them a tool
+
+`git-ssh-key` will read `.ssh/config` (default) and write into an alias host config.
+
+like this
+
+```
+Host github.com-f5851eb
+HostName github.com
+User git
+IdentityFile /Users/alingse/.ssh/github.com-f5851eb.id_rsa
+```
 
 
 ## Develop
