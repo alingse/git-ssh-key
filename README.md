@@ -1,19 +1,42 @@
-# git-ssh-keys-keeper
-manager multi git ssh keys in one machine, with serval private or public repo.
+# git-ssh-key
+
+manager multi git repo ssh keys in one machine, with multi private or public repo.
+
+this command will auto generate the key and add it to your ssh config
+
+## usage
 
 ```bash
 pip install git-ssh-key
 ```
 
-change git url
+run command with your repo link
 
 ```bash
-$git-ssh-key https://github.com/alingse/git-ssh-key.git
+git-ssh-key https://github.com/alingse/git-ssh-key.git
+```
+
+it will print the new alias repo link and the new public key,
+
+```bash
 New repo address: git@github.com-f5851eb:alingse/git-ssh-key.git
 New repo public rsa key: /Users/alingse/.ssh/github.com-f5851eb.id_rsa.pub
 ```
 
-## Dev
+you can add it to repo's setting keys
+
+```bash
+git-ssh-key --help
+
+git-ssh-key --config your.ssh.config --keys your-ssh-keys/ your.repo
+```
+
+## How
+
+I ever see some stackoverflow and github gist, and just make them a tool
+
+
+## Develop
 
 ```bash
 pdm install
@@ -34,7 +57,7 @@ pdm config publish.password yyy
 pdm publish
 ```
 
-## TODO
+## more TODO
 
 1. show public key ?
 2. better -c -k ?
@@ -43,3 +66,5 @@ pdm publish
 5. add more test ?
 6. support duplicate keys ?
 7. better giturlparse
+8. allow user generate the key first
+
