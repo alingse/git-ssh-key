@@ -17,7 +17,6 @@ git-ssh-key https://github.com/alingse/git-ssh-key.git
 ```
 
 it will print the new alias repo link and the new public key,
-
 ```bash
 New repo address: git@github.com-f5851eb:alingse/git-ssh-key.git
 New repo public rsa key: /Users/alingse/.ssh/github.com-f5851eb.id_rsa.pub
@@ -25,7 +24,7 @@ New repo public rsa key: /Users/alingse/.ssh/github.com-f5851eb.id_rsa.pub
 
 the public key has already been configured in your ssh config file, remember add it to repo's setting keys (private or public)
 
-and then just clone like
+and then just clone like this,
 
 ```bash
 git clone git@github.com-f5851eb:alingse/git-ssh-key.git
@@ -35,8 +34,6 @@ more options see
 
 ```bash
 git-ssh-key --help
-
-git-ssh-key --config your.ssh.config --keys your-ssh-keys/ your.repo
 ```
 
 ## How it work
@@ -86,4 +83,6 @@ pdm publish
 6. support duplicate keys ?
 7. better giturlparse
 8. allow user generate the key first
+9. enable input tag ?
+
 
