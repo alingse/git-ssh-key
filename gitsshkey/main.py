@@ -28,49 +28,60 @@ _add_home = lambda p: pathlib.Path().home().joinpath(p).absolute().as_posix()
 _hash_tag = lambda u: hashlib.sha256(u.encode()).hexdigest()[:7]
 
 
+def make_alias(repo, tag):
+    repo = parse(repo.url2ssh)
+    repo._parsed['domain'] = repo.domain + '-' + tag
+    alias_repo = parse(repo.url2ssh)
+    if not alias_repo.valid:
+        raise click.ClickException(f'git ssh url is not valid {repo.url2ssh}')
+    return alias_repo
+
+
 @click.command()
-@click.option('-c', '--config', 'config_file',
+@click.option(
+    '-c', '--config', 'config_file',
     type=click.Path(exists=True, dir_okay=False, file_okay=True, writable=True),
     help=f'ssh config file path, default is $HOME/{DEFAULT_SSH_CONFIG}',
     default=_add_home(DEFAULT_SSH_CONFIG))
-@click.option('--keys', 'keys',
+@click.option(
+    '--keys', 'keys',
     type=click.Path(exists=True, dir_okay=True, file_okay=False, writable=True),
     help=f'ssh keys file path, default is $HOME/{DEFAULT_SSH_KEYS}',
     default=_add_home(DEFAULT_SSH_KEYS))
 @click.argument('repo', type=GIT_REPO)
 def main(repo, keys, config_file):
     '''
-    REPO    git repo https/ssh/git
+    REPO    git repo link https/ssh/git
     '''
     config = read_ssh_config(config_file)
 
-    # domain-hash
-    domain = repo.domain
     tag = _hash_tag(repo.url2ssh)
-    domain_tag = domain + '-' + tag
-    if domain_tag in config.hosts():
+    alias_repo = make_alias(repo, tag)
+    if alias_repo.domain in config.hosts():
+        # TODO: add echo
         return
 
-    key_file = f'{domain_tag}.id_rsa'
+    key_file = f'{alias_repo.domain}.id_rsa'
     key_path = pathlib.Path(keys).joinpath(key_file)
+
     public_key_file = key_file + '.pub'
     public_key_path = pathlib.Path(keys).joinpath(public_key_file)
     if key_path.exists() or public_key_path.exists():
+        # TODO: add echo
         return
 
     # generate key
-    comment = f'{domain_tag} for {repo.url2ssh}'
+    comment = f'key for {alias_repo.url2ssh}'
     cmd = f'ssh-keygen -t rsa -b 2048 -C "{comment}" -f {key_path.as_posix()} -q -N ""'
     flag = os.system(cmd)
     if flag != 0:
+        # TODO: add echo
         return
 
-    # add config
-    config.add(domain_tag, Hostname=domain, User=repo.user, IdentityFile=key_path.as_posix())
+    # save to config
+    config.add(alias_repo.domain, Hostname=repo.domain, User=repo.user, IdentityFile=key_path.as_posix())
     config.save()
 
-    # update && show
-    repo._parsed['domain'] = domain_tag
-    url = repo.url2ssh
-    click.echo(f'New repo address: {click.style(url, fg="green")}')
+    # show
+    click.echo(f'New repo address: {click.style(alias_repo.url2ssh, fg="green")}')
     click.echo(f'New repo public rsa key: {click.style(public_key_path, fg="green")}')
