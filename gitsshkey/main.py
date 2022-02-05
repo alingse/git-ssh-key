@@ -58,7 +58,8 @@ def main(repo, keys, config_file):
     tag = _hash_tag(repo.url2ssh)
     alias_repo = make_alias(repo, tag)
     if alias_repo.domain in config.hosts():
-        # TODO: add echo
+        click.echo(f'alias repo already added in ssh config')
+        click.echo(f'alias repo address: {click.style(alias_repo.url2ssh, fg="green")}')
         return
 
     key_file = f'{alias_repo.domain}.id_rsa'
@@ -67,21 +68,21 @@ def main(repo, keys, config_file):
     public_key_file = key_file + '.pub'
     public_key_path = pathlib.Path(keys).joinpath(public_key_file)
     if key_path.exists() or public_key_path.exists():
-        # TODO: add echo
-        return
+        click.echo(f'key file {key_path.as_posix()} or public key file {public_key_path.as_posix()} already exists.')
+        raise click.Abort()
 
     # generate key
     comment = f'key for {alias_repo.url2ssh}'
     cmd = f'ssh-keygen -t rsa -b 2048 -C "{comment}" -f {key_path.as_posix()} -q -N ""'
     flag = os.system(cmd)
     if flag != 0:
-        # TODO: add echo
-        return
+        click.echo(f'run command {click.style(cmd, fg="red")} failed.')
+        raise click.Abort()
 
     # save to config
     config.add(alias_repo.domain, Hostname=repo.domain, User=repo.user, IdentityFile=key_path.as_posix())
     config.save()
 
     # show
-    click.echo(f'New repo address: {click.style(alias_repo.url2ssh, fg="green")}')
-    click.echo(f'New repo public rsa key: {click.style(public_key_path, fg="green")}')
+    click.echo(f'alias repo address: {click.style(alias_repo.url2ssh, fg="green")}')
+    click.echo(f'alias repo public rsa key: {click.style(public_key_path, fg="green")}')
