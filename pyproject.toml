@@ -1,6 +1,6 @@
 [project]
 name = "git-ssh-key"
-version = "0.1.1-a1"
+version = "0.1.1-a2"
 description = ""
 authors = [
     {name = "alingse", email = "alingse@foxmail.com"},
