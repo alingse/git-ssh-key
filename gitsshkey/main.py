@@ -40,6 +40,16 @@ def make_alias(repo, tag):
     return alias_repo
 
 
+def get_or_create_config(config_file):
+    if pathlib.Path(config_file).exists():
+        config = read_ssh_config(config_file)
+        save_config = lambda: config.save
+    else:
+        config = empty_ssh_config_file()
+        save_config = lambda: config.write(config_file)
+    return config, save_config
+
+
 def get_new_key_path(keys, alias_repo):
     key_file = f'{alias_repo.domain}.id_rsa'
     key_path = pathlib.Path(keys).joinpath(key_file)
@@ -94,17 +104,14 @@ def main(repo, tag, key, keys, config_file):
     '''
     REPO    git repo link( https/ssh/git )
     '''
-    if pathlib.Path(config_file).exists():
-        config = read_ssh_config(config_file)
-        save_config = lambda: config.save
-    else:
-        config = empty_ssh_config_file()
-        save_config = lambda: config.write(config_file)
-
-    if not tag:
+    if tag is None:
         tag = _hash_tag(repo.url2ssh)
     alias_repo = make_alias(repo, tag)
-    # check
+
+    # config
+    config, save_config = get_or_create_config(config_file)
+
+    # check if exists.
     if alias_repo.domain in config.hosts():
         click.echo(f'alias repo already added in ssh config')
         click.echo(f'alias repo address: {_green(alias_repo.url2ssh)}')
