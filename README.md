@@ -22,9 +22,9 @@ New repo address: git@github.com-f5851eb:alingse/git-ssh-key.git
 New repo public rsa key: /Users/alingse/.ssh/github.com-f5851eb.id_rsa.pub
 ```
 
-the public key has already been configured in your ssh config file, remember add it to repo's setting keys (private or public)
+the public key has already been configured in your ssh config file, remember add it to repo's setting keys (https://github.com/user/repo/settings/keys)
 
-and then just clone like this,
+and then just clone like this
 
 ```bash
 git clone git@github.com-f5851eb:alingse/git-ssh-key.git
@@ -35,6 +35,12 @@ more options see
 ```bash
 git-ssh-key --help
 ```
+
+
+```bash
+git-ssh-key -c git.ssh.config --keys ./../ -t web-backend git@github.com:alingse/git-ssh-key.git
+```
+
 
 ## How it work
 
@@ -51,8 +57,11 @@ User git
 IdentityFile /Users/alingse/.ssh/github.com-f5851eb.id_rsa
 ```
 
+the `f5851eb` is tag, default generate by hash(url)
 
 ## Develop
+
+pdm see https://pdm.fming.dev/
 
 ```bash
 pdm install
@@ -81,4 +90,4 @@ pdm publish
 6. support duplicate keys ?
 7. better giturlparse
 8. allow user generate the key first ?
-9. allow input tag ?
+
