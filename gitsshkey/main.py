@@ -40,17 +40,10 @@ def make_alias(repo, tag):
     return alias_repo
 
 
-def make_key_path(keys, alias_repo):
-    keys_path = pathlib.Path(keys).absolute().resolve()
-
-    private_key_file = f'{alias_repo.domain}.id_rsa'
-    public_key_file = f'{private_key_file}.pub'
-    private_key_path = keys_path.joinpath(private_key_file).absolute().resolve()
-    public_key_path = keys_path.joinpath(public_key_file).absolute().resolve()
-    if private_key_path.exists() or public_key_path.exists():
-        click.echo(f'key file {_red(private_key_path)} or public key file {_red(public_key_path)} already exists.')
-        raise click.Abort()
-    return private_key_path, public_key_path
+def get_new_key_path(keys, alias_repo):
+    key_file = f'{alias_repo.domain}.id_rsa'
+    key_path = pathlib.Path(keys).joinpath(key_file)
+    return key_path.absolute().resolve()
 
 
 def generate_key(private_key_path, alias_repo):
@@ -59,6 +52,22 @@ def generate_key(private_key_path, alias_repo):
     if flag != 0:
         click.echo(f'run command {_red(cmd)} failed.')
         raise click.Abort()
+
+
+def get_or_create_key(key, keys, alias_repo):
+    if key:
+        key_path = pathlib.Path(key).absolute().resolve()
+    else:
+        key_path = get_new_key_path(keys, alias_repo)
+        if not key_path.exists():
+            generate_key(key_path, alias_repo)
+
+    public_key_path = pathlib.Path(key_path.as_posix() + '.pub').absolute().resolve()
+    if not public_key_path.exists():
+        click.echo(f'public key path {_red(public_key_path)} not exists')
+        raise click.Abort()
+
+    return key_path, public_key_path
 
 
 @click.command()
@@ -70,13 +79,18 @@ def generate_key(private_key_path, alias_repo):
 @click.option(
     '--keys', 'keys',
     type=click.Path(exists=True, dir_okay=True, file_okay=False, writable=True),
-    help=f'ssh keys file path, default is $HOME/{DEFAULT_SSH_KEYS}',
+    help=f'new generate ssh key\'s path, default is $HOME/{DEFAULT_SSH_KEYS}',
     default=_add_home(DEFAULT_SSH_KEYS))
 @click.option(
+    '-k', '--key', 'key',
+    type=click.Path(exists=True, dir_okay=False, file_okay=True),
+    help=f'ssh private key file, if not provide, will auto generate a new key into `--keys`')
+@click.option(
     '-t', '--tag', 'tag',
-    type=str, help='alias tag add to host default is hash(url)')
+    type=str,
+    help='alias tag add to host default is hash(url)')
 @click.argument('repo', type=GIT_REPO)
-def main(repo, tag, keys, config_file):
+def main(repo, tag, key, keys, config_file):
     '''
     REPO    git repo link( https/ssh/git )
     '''
@@ -96,16 +110,15 @@ def main(repo, tag, keys, config_file):
         click.echo(f'alias repo address: {_green(alias_repo.url2ssh)}')
         return
 
-    # generate key
-    private_key_path, public_key_path = make_key_path(keys, alias_repo)
-    generate_key(private_key_path, alias_repo)
+    # get or create key
+    key_path, public_key_path = get_or_create_key(key, keys, alias_repo)
 
     # save config
     config.add(
         alias_repo.domain,
         Hostname=repo.domain,
         User=repo.user,
-        IdentityFile=private_key_path.as_posix())
+        IdentityFile=key_path.as_posix())
     save_config()
 
     # show
