@@ -67,6 +67,8 @@ pdm see https://pdm.fming.dev/
 pdm install
 
 pdm build
+
+pdm run git-ssh-key --help
 ```
 
 ### publish
@@ -85,9 +87,5 @@ pdm publish
 ## more TODO
 
 1. show public key ?
-2. better -c -k ?
 5. add more test ?
-6. support duplicate keys ?
 7. better giturlparse
-8. allow user generate the key first ?
-

@@ -50,14 +50,8 @@ def get_or_create_config(config_file):
     return config, save_config
 
 
-def get_new_key_path(keys, alias_repo):
-    key_file = f'{alias_repo.domain}.id_rsa'
-    key_path = pathlib.Path(keys).joinpath(key_file)
-    return key_path.absolute().resolve()
-
-
-def generate_key(private_key_path, alias_repo):
-    cmd = f'ssh-keygen -t rsa -b 2048 -C "key for {alias_repo.url2ssh}" -f {private_key_path.as_posix()} -q -N ""'
+def generate_key(key_path, alias_repo):
+    cmd = f'ssh-keygen -t rsa -b 2048 -C "key for {alias_repo.url2ssh}" -f {key_path.as_posix()} -q -N ""'
     flag = os.system(cmd)
     if flag != 0:
         click.echo(f'run command {_red(cmd)} failed.')
@@ -68,11 +62,12 @@ def get_or_create_key(key, keys, alias_repo):
     if key:
         key_path = pathlib.Path(key).absolute().resolve()
     else:
-        key_path = get_new_key_path(keys, alias_repo)
+        key_file = f'{alias_repo.domain}.id_rsa'
+        key_path = pathlib.Path(keys).joinpath(key_file).absolute().resolve()
         if not key_path.exists():
             generate_key(key_path, alias_repo)
 
-    public_key_path = pathlib.Path(key_path.as_posix() + '.pub').absolute().resolve()
+    public_key_path = pathlib.Path(key_path.as_posix() + '.pub')
     if not public_key_path.exists():
         click.echo(f'public key path {_red(public_key_path)} not exists')
         raise click.Abort()
