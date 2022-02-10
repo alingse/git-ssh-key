@@ -43,7 +43,7 @@ def make_alias(repo, tag):
 def get_or_create_config(config_file):
     if pathlib.Path(config_file).exists():
         config = read_ssh_config(config_file)
-        save_config = lambda: config.save
+        save_config = lambda: config.save()
     else:
         config = empty_ssh_config_file()
         save_config = lambda: config.write(config_file)
