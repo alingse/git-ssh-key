@@ -20,15 +20,19 @@ class GitRepoType(click.ParamType):
 GIT_REPO = GitRepoType()
 
 
-DEFAULT_SSH_CONFIG = '.ssh/config'
-DEFAULT_SSH_KEYS = '.ssh/'
-
-
-_add_home = lambda p: pathlib.Path().home().joinpath(p).absolute().resolve().as_posix()
+_add_home = lambda p: pathlib.Path().home().joinpath(p).absolute().resolve()
 _hash_tag = lambda u: hashlib.sha256(u.encode()).hexdigest()[:7]
 
 _green = lambda t: click.style(t, fg="green")
 _red = lambda t: click.style(t, fg="red")
+
+
+if _add_home('.ssh/').exists():
+    DEFAULT_SSH_CONFIG = '.ssh/config'
+    DEFAULT_SSH_KEYS = '.ssh/'
+else:
+    DEFAULT_SSH_CONFIG = 'git-ssh-key.config'
+    DEFAULT_SSH_KEYS = ''
 
 
 def make_alias(repo, tag):
@@ -43,7 +47,7 @@ def make_alias(repo, tag):
 def get_or_create_config(config_file):
     if pathlib.Path(config_file).exists():
         config = read_ssh_config(config_file)
-        save_config = lambda: config.save
+        save_config = lambda: config.save()
     else:
         config = empty_ssh_config_file()
         save_config = lambda: config.write(config_file)
@@ -80,12 +84,12 @@ def get_or_create_key(key, keys, alias_repo):
     '-c', '--config', 'config_file',
     type=click.Path(dir_okay=False, file_okay=True, writable=True),
     help=f'ssh config file path, default is $HOME/{DEFAULT_SSH_CONFIG}',
-    default=_add_home(DEFAULT_SSH_CONFIG))
+    default=_add_home(DEFAULT_SSH_CONFIG).as_posix())
 @click.option(
     '--keys', 'keys',
-    type=click.Path(exists=True, dir_okay=True, file_okay=False, writable=True),
+    type=click.Path(exists=False, dir_okay=True, file_okay=False, writable=True),
     help=f'new generate ssh key\'s path, default is $HOME/{DEFAULT_SSH_KEYS}',
-    default=_add_home(DEFAULT_SSH_KEYS))
+    default=_add_home(DEFAULT_SSH_KEYS).as_posix())
 @click.option(
     '-k', '--key', 'key',
     type=click.Path(exists=True, dir_okay=False, file_okay=True),
