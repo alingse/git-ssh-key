@@ -87,7 +87,7 @@ def get_or_create_key(key, keys, alias_repo):
     default=_add_home(DEFAULT_SSH_CONFIG).as_posix())
 @click.option(
     '--keys', 'keys',
-    type=click.Path(exists=False, dir_okay=True, file_okay=False, writable=True),
+    type=click.Path(exists=True, dir_okay=True, file_okay=False, writable=True),
     help=f'new generate ssh key\'s path, default is $HOME/{DEFAULT_SSH_KEYS}',
     default=_add_home(DEFAULT_SSH_KEYS).as_posix())
 @click.option(
