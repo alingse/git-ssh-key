@@ -42,3 +42,6 @@ jobs:
         cat git.ssh.config
         git-ssh-key https://www.github.com/alingse/git-ssh-key -c git.ssh.config -t hello -k ./github.com-hello.id_rsa
         cat git.ssh.config
+
+        git-ssh-key https://www2.github.com/alingse/git-ssh-key
+        git-ssh-key https://www3.github.com/alingse/git-ssh-key
