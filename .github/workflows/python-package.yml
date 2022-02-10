@@ -45,3 +45,6 @@ jobs:
 
         git-ssh-key https://www2.github.com/alingse/git-ssh-key
         git-ssh-key https://www3.github.com/alingse/git-ssh-key
+
+        mkdir -p /home/runner/.ssh/
+        git-ssh-key --help

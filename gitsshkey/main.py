@@ -31,8 +31,8 @@ if _add_home('.ssh/').exists():
     DEFAULT_SSH_CONFIG = '.ssh/config'
     DEFAULT_SSH_KEYS = '.ssh/'
 else:
-    DEFAULT_SSH_CONFIG = './git-ssh-key.config'
-    DEFAULT_SSH_KEYS = '.'
+    DEFAULT_SSH_CONFIG = 'git-ssh-key.config'
+    DEFAULT_SSH_KEYS = ''
 
 
 def make_alias(repo, tag):
