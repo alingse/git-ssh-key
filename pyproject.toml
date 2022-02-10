@@ -10,7 +10,7 @@ dependencies = [
     "click>=8.0.3",
     "giturlparse>=0.10.0",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.6"
 license = {text = "MIT"}
 readme = "README.md"
 
