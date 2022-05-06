@@ -23,8 +23,8 @@ GIT_REPO = GitRepoType()
 _add_home = lambda p: pathlib.Path().home().joinpath(p).absolute().resolve()
 _hash_tag = lambda u: hashlib.sha256(u.encode()).hexdigest()[:7]
 
-_green = lambda t: click.style(t, fg="green")
-_red = lambda t: click.style(t, fg="red")
+_green = lambda t: click.style(str(t), fg="green")
+_red = lambda t: click.style(str(t), fg="red")
 
 
 if _add_home('.ssh/').exists():
